@@ -3,21 +3,15 @@ class Solution {
         if (nums.length < 3)
             return false;
 
-        int[] leftMin = new int[nums.length];
-        leftMin[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            leftMin[i] = Math.min(leftMin[i - 1], nums[i]);
-        }
-
-        int[] rightMax = new int[nums.length];
-        rightMax[nums.length - 1] = nums[nums.length - 1];
-        for (int i = nums.length - 2; i >= 0; i--) {
-            rightMax[i] = Math.max(rightMax[i + 1], nums[i]);
-        }
+        int n1 = Integer.MAX_VALUE, n2 = Integer.MAX_VALUE;
 
         for (int i = 0; i < nums.length; i++) {
-            if (leftMin[i] < nums[i] && nums[i] < rightMax[i])
+            if (nums[i] > n2)
                 return true;
+            if (nums[i] <= n1)
+                n1 = nums[i];
+            else if (nums[i] <= n2)
+                n2 = nums[i];
         }
         return false;
     }
