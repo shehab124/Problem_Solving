@@ -1,3 +1,8 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import javax.management.Query;
+
 class TreeNode {
     int val;
     TreeNode left;
@@ -9,7 +14,7 @@ class TreeNode {
 }
 
 public class BinaryTree {
-    private TreeNode root;
+    public TreeNode root;
 
     public BinaryTree() {
         this.root = null;
@@ -19,27 +24,29 @@ public class BinaryTree {
         this.root = root;
     }
 
-    public void addNodes(int[] values) {
-        for (int value : values) {
-            root = insert(root, value);
+    public void create(Integer[] values) {
+
+        if (values == null || values.length == 0) {
+            return;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        root = new TreeNode(values[0]);
+        queue.add(root);
+
+        for (int i = 1; i < values.length; i += 2) {
+            TreeNode current = queue.poll();
+
+            if (values[i] != null) {
+                current.left = new TreeNode(values[i]);
+                queue.add(current.left);
+            }
+            if (i + 1 < values.length && values[i + 1] != null) {
+                current.right = new TreeNode(values[i + 1]);
+                queue.add(current.right);
+            }
         }
     }
-
-    private TreeNode insert(TreeNode root, int val) {
-        if (root == null) {
-            return new TreeNode(val);
-        }
-
-        if (val < root.val) {
-            root.left = insert(root.left, val);
-        } else if (val > root.val) {
-            root.right = insert(root.right, val);
-        }
-
-        return root;
-    }
-
-    // Traversal methods
 
     public void preOrderTraversal() {
         preOrderTraversal(root);
