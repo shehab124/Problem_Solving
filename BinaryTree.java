@@ -1,8 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.management.Query;
-
 class TreeNode {
     int val;
     TreeNode left;
