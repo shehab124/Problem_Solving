@@ -15,12 +15,15 @@
  */
 class Solution {
 
+    // returns height of binary tree
     public static int height(TreeNode root)
     {
         if(root == null)
             return 0;
         return Math.max(height(root.left), height(root.right)) + 1;
     }
+
+    // calculate sum of each level using Preorder Traversal
     public void helper(TreeNode root, int[] sum, int level)
     {
         if(root == null)
@@ -36,8 +39,10 @@ class Solution {
         int[] levels = new int[height(root) + 1];
 
         helper(root, levels, 1);
+
         int max = levels[1];
         int maxLevel = 1;
+        
         for(int i = 1; i < levels.length; i++)
         {
             if(levels[i] > max)
@@ -46,6 +51,7 @@ class Solution {
                 max = levels[i];
             }
         }
+        
         return maxLevel;
     }
 }
