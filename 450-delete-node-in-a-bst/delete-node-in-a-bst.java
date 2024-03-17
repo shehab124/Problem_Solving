@@ -15,9 +15,23 @@
  */
 class Solution {
 
-     public static TreeNode InSucc(TreeNode root) {
+    public static int Height(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(Height(root.left), Height(root.right)) + 1;
+    }
+
+    public static TreeNode InSucc(TreeNode root) {
         while (root != null && root.left != null) {
             root = root.left;
+        }
+        return root;
+    }
+
+    public static TreeNode InPre(TreeNode root) {
+        while (root != null && root.right != null) {
+            root = root.right;
         }
         return root;
     }
@@ -46,9 +60,15 @@ class Solution {
             }
             // case 3: root has 2 children
             else {
-                TreeNode temp = InSucc(root.right);
-                root.val = temp.val;
-                root.right = deleteNode(root.right, temp.val);
+                if (Height(root.left) < Height(root.right)) {
+                    TreeNode temp = InPre(root.left);
+                    root.val = temp.val;
+                    root.left = deleteNode(root.left, temp.val);
+                } else {
+                    TreeNode temp = InSucc(root.right);
+                    root.val = temp.val;
+                    root.right = deleteNode(root.right, temp.val);
+                }
             }
         }
         return root;
