@@ -4,6 +4,7 @@
  */
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Graph {
 
@@ -62,14 +63,33 @@ public class Graph {
         System.out.println(startingVertex);
 
         while (!queue.isEmpty()) {
-            int u = queue.poll();
+            int u = queue.poll(); // node to explore
 
+            // exploring
             for (int i = u; i < numVertices; i++) {
                 if (adjacencyMatrix[u][i] == 1 && visited[i] == 0) {
+                    // visit nodes
                     System.out.println(i);
                     queue.add(i);
                     visited[i] = 1;
                 }
+            }
+        }
+    }
+
+    public void DFS(int startingVertex) {
+        int[] visited = new int[numVertices];
+        DFSRecursive(startingVertex, visited);
+    }
+
+    private void DFSRecursive(int vertex, int[] visited) {
+        if (visited[vertex] == 0) {
+            System.out.println(vertex);
+            visited[vertex] = 1;
+
+            for (int i = 0; i < numVertices; i++) {
+                if (adjacencyMatrix[vertex][i] == 1 && visited[i] == 0)
+                    DFSRecursive(i, visited);
             }
         }
     }
@@ -89,7 +109,9 @@ public class Graph {
 
         // graph.printAdjacencyMatrix();
 
-        graph.BFS(1);
+        // graph.BFS(1);
+
+        graph.DFS(1);
     }
 
 }
