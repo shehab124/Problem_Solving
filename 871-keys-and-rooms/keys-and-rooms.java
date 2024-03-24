@@ -1,29 +1,25 @@
 class Solution {
+
+    public static void helper(int vertex, List<List<Integer>> rooms, int[] visited) {
+        if (visited[vertex] == 0)
+            visited[vertex] = 1;
+
+        int n = rooms.get(vertex).size();
+        for (int i = 0; i < n; i++) {
+            int x = rooms.get(vertex).get(i);
+            if (visited[x] == 0)
+                helper(rooms.get(vertex).get(i), rooms, visited);
+        }
+    }
+
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
         int n = rooms.size();
         int[] visited = new int[n];
-        visited[0] = 1;
-        Queue<Integer> queue = new LinkedList<>();
 
-        for (int i = 0; i < rooms.get(0).size(); i++) {
-            queue.add(rooms.get(0).get(i));
-            visited[rooms.get(0).get(i)] = 1;
-        }
-
-        while (!queue.isEmpty()) {
-            int vertex = queue.poll();
-
-            for (int i = 0; i < rooms.get(vertex).size(); i++) {
-                if (visited[rooms.get(vertex).get(i)] == 0) {
-                    visited[rooms.get(vertex).get(i)] = 1;
-                    queue.add(rooms.get(vertex).get(i));
-                }
-            }
-        }
-        for (int i = 0; i < visited.length; i++) {
+        helper(0, rooms, visited);
+        for (int i = 0; i < n; i++)
             if (visited[i] == 0)
                 return false;
-        }
         return true;
     }
 }
