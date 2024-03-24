@@ -2,9 +2,9 @@
 /*
  * Undirected graph using adjacency matrix
  */
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 public class Graph {
 
@@ -17,7 +17,7 @@ public class Graph {
 
         for (int i = 0; i < numVertices; i++)
             for (int j = 0; j < numVertices; j++)
-                adjacencyMatrix[i][j] = 0;
+                adjacencyMatrix[i][j] = Integer.MAX_VALUE;
     }
 
     public void addEdge(int source, int destination, int weight) {
@@ -94,24 +94,89 @@ public class Graph {
         }
     }
 
+    public int[][] Prim() {
+        int[] near = new int[numVertices];
+        int[][] t = new int[2][numVertices - 2]; // not counting zero (numVertices - 1) if counting 0
+
+        // initialise near array with max value
+        for (int i = 0; i < numVertices; i++)
+            near[i] = Integer.MAX_VALUE;
+
+        // find smallest edge
+        int u = 0, v = 0;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = i; j < numVertices; j++) {
+                if (adjacencyMatrix[i][j] < min) {
+                    u = i;
+                    v = j;
+                    min = adjacencyMatrix[i][j];
+                }
+            }
+        }
+
+        // set first column of t
+        t[0][0] = u;
+        t[1][0] = v;
+
+        // set picked edges to 0 since we won't update them again
+        near[u] = 0;
+        near[v] = 0;
+
+        // fill near array using first edge
+        for (int i = 1; i < numVertices; i++) {
+            if (near[i] != 0 && adjacencyMatrix[u][i] < adjacencyMatrix[v][i])
+                near[i] = u;
+            else
+                near[i] = v;
+        }
+
+        // repeating steps
+        for (int i = 1; i < numVertices - 2; i++) {
+
+            // find min in near array
+            min = Integer.MAX_VALUE;
+            for (int j = 1; j < numVertices; j++) {
+                if (near[j] != 0 && adjacencyMatrix[j][near[j]] < min) {
+                    min = adjacencyMatrix[j][near[j]];
+                    u = j;
+                    v = near[j];
+                }
+            }
+
+            // update near array and t
+            near[u] = 0;
+            t[0][i] = u;
+            t[1][i] = v;
+            for (int j = 1; j < numVertices; j++) {
+                if (near[j] != 0 && adjacencyMatrix[j][u] < adjacencyMatrix[j][v])
+                    near[j] = u;
+            }
+
+        }
+        return t;
+    }
+
     public static void main(String[] args) {
         Graph graph = new Graph(8);
 
-        graph.addEdge(1, 2, 1);
-        graph.addEdge(1, 3, 1);
-        graph.addEdge(1, 4, 1);
-        graph.addEdge(2, 3, 1);
-        graph.addEdge(3, 4, 1);
-        graph.addEdge(3, 5, 1);
-        graph.addEdge(4, 5, 1);
-        graph.addEdge(5, 6, 1);
-        graph.addEdge(5, 7, 1);
+        graph.addEdge(1, 2, 25);
+        graph.addEdge(1, 6, 5);
+        graph.addEdge(2, 7, 10);
+        graph.addEdge(2, 3, 12);
+        graph.addEdge(3, 4, 8);
+        graph.addEdge(4, 5, 16);
+        graph.addEdge(4, 7, 14);
+        graph.addEdge(5, 7, 18);
+        graph.addEdge(5, 6, 20);
 
-        // graph.printAdjacencyMatrix();
-
-        // graph.BFS(1);
-
-        graph.DFS(1);
+        int[][] t = graph.Prim();
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < t[0].length; j++) {
+                System.out.print(t[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
 }
