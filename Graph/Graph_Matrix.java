@@ -1,3 +1,4 @@
+package Graph;
 
 /*
  * Undirected graph using adjacency matrix
@@ -5,18 +6,18 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Graph {
+public class Graph_Matrix {
 
     private int[][] adjacencyMatrix;
     private int numVertices;
 
-    public Graph(int numVertices) {
+    public Graph_Matrix(int numVertices) {
         this.numVertices = numVertices;
         adjacencyMatrix = new int[numVertices][numVertices];
 
         for (int i = 0; i < numVertices; i++)
             for (int j = 0; j < numVertices; j++)
-                adjacencyMatrix[i][j] = Integer.MAX_VALUE;
+                adjacencyMatrix[i][j] = 0;
     }
 
     public void addEdge(int source, int destination, int weight) {
@@ -93,6 +94,7 @@ public class Graph {
         }
     }
 
+    // need fixes
     public int[][] Prim() {
         int[] near = new int[numVertices];
         int[][] t = new int[2][numVertices - 2]; // not counting zero (numVertices - 1) if counting 0
@@ -157,7 +159,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph(8);
+        Graph_Matrix graph = new Graph_Matrix(8);
 
         graph.addEdge(1, 2, 25);
         graph.addEdge(1, 6, 5);
