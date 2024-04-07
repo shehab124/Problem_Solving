@@ -1,21 +1,30 @@
 class SmallestInfiniteSet {
 
-Queue<Integer> queue;
+    Queue<Integer> queue;
+    Map<Integer, Integer> map;
 
     public SmallestInfiniteSet() {
         queue = new PriorityQueue<>();
+        map = new HashMap<>();
 
-        for (int i = 1; i <= 1000; i++)
+        for (int i = 1; i <= 1000; i++) {
             queue.offer(i);
+            map.put(i, 1);
+        }
     }
 
     public int popSmallest() {
-        return queue.poll();
+
+        int popped = queue.poll();
+        map.replace(popped, 0);
+        return popped;
     }
 
     public void addBack(int num) {
-        if (!queue.contains(num))
+        if (map.get(num) == 0) {
             queue.add(num);
+            map.replace(num, 1);
+        }
     }
 }
 
