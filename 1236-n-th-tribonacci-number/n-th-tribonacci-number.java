@@ -1,13 +1,21 @@
 class Solution {
-    public int tribonacci(int n) {
-        int[] dp = new int[n + 3];
-        dp[0] = 0;
-        dp[1] = 1;
-        dp[2] = 1;
 
-        for (int i = 3; i <= n; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
-        }
-        return dp[n];
+    int[] mem;
+    private int helper(int i)
+    {
+        if(mem[i] != -1)
+            return mem[i];
+
+        return mem[i] = helper(i - 1) + helper(i - 2) + helper( i - 3);
+    }
+
+    public int tribonacci(int n) {
+        mem = new int[n+3];
+
+        Arrays.fill(mem, -1);
+        mem[0] = 0;
+        mem[1] = 1;
+        mem[2] = 1;
+        return helper(n);
     }
 }
